@@ -1,49 +1,20 @@
-import '../components/registerNavButtons.dart';
+import 'package:e_voting/components/signInHeader.dart';
+import 'package:e_voting/components/signInNav.dart';
 import 'package:flutter/material.dart';
 
-class RegisterStep3 extends StatefulWidget {
+class SignInStep4Page extends StatefulWidget {
 
   @override
-  _RegisterStep3State createState() => _RegisterStep3State();
+  _SignInStep4PageState createState() => _SignInStep4PageState();
 }
 
-class _RegisterStep3State extends State<RegisterStep3> {
-  String dropdownValue = 'CC';
+class _SignInStep4PageState extends State<SignInStep4Page> {
+  String telNumberValue = "+53";
 
   @override
   Widget build(BuildContext context) {
-    final decorationRectangle = Container(
-      width: 45.0,
-      height: 45.0,
-      margin: EdgeInsets.only(
-        top: 80.0,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-    );
 
-    final title = Container(
-      margin: EdgeInsets.only(
-        top: 25.0,
-      ),
-      child: Text(
-        "Paso 3",
-        style: TextStyle(color: Colors.black, fontSize: 42),
-      ),
-    );
-
-    final subtitle = Container(
-      margin: EdgeInsets.only(top: 15.0),
-      child: Text(
-        "Tu número de identificación",
-        style: TextStyle(color: Colors.grey, fontSize: 24),
-      ),
-    );
-
-
-    final typeDniInput = Container(
+    final telTypeInput = Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       margin: EdgeInsets.only(right: 15.0),
       decoration: BoxDecoration(
@@ -51,8 +22,8 @@ class _RegisterStep3State extends State<RegisterStep3> {
         borderRadius: BorderRadius.circular(12)
       ),
       child: DropdownButton<String>(
-        value: dropdownValue,
-        hint: Text(dropdownValue),
+        value: telNumberValue,
+        hint: Text(telNumberValue),
         icon: Icon(Icons.keyboard_arrow_down,color: Colors.white, size: 24),
         style: TextStyle(color: Colors.white),
         dropdownColor: Theme.of(context).primaryColor,
@@ -61,10 +32,10 @@ class _RegisterStep3State extends State<RegisterStep3> {
         ),
         onChanged: (String newValue) {
           setState(() {
-            dropdownValue = newValue;
+            telNumberValue = newValue;
           });
         },
-        items: <String>['CC', 'CE', 'TI'].map<DropdownMenuItem<String>>((String value) {
+        items: <String>["+53", '+52', '+51'].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
@@ -73,10 +44,10 @@ class _RegisterStep3State extends State<RegisterStep3> {
       ),
     );
 
-    final dniInput = Expanded(
+    final telNumberInput = Expanded(
       child: TextFormField(
         decoration: InputDecoration(
-          hintText: '10010987654',
+          hintText: '3065197565',
           hintStyle: TextStyle(color: Colors.grey),
         ),
         obscureText: true,
@@ -95,8 +66,8 @@ class _RegisterStep3State extends State<RegisterStep3> {
         // key: _formKey,
         child: Row(
           children: <Widget>[
-            typeDniInput,
-            dniInput
+            telTypeInput,
+            telNumberInput
           ],
         ),
       ),
@@ -105,6 +76,7 @@ class _RegisterStep3State extends State<RegisterStep3> {
     final viewStructure = Scaffold(
       body: ListView(children: [
         Container(
+          margin: EdgeInsets.only(top: 80.0),
           padding: EdgeInsets.only(
             left: 40.0,
             right: 40.0,
@@ -113,11 +85,9 @@ class _RegisterStep3State extends State<RegisterStep3> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              decorationRectangle,
-              title,
-              subtitle,
+              SignInHeader(title: "Paso 4", subtitle: "Tu número de identificación"),
               form,
-              RegisterNavButtons('/registerStep4')
+              SignInNav('/signInStep5')
             ],
           ),
         ),

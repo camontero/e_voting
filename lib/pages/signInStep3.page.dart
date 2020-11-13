@@ -1,47 +1,19 @@
-import '../components/registerNavButtons.dart';
+import 'package:e_voting/components/signInHeader.dart';
+
+import 'package:e_voting/components/signInNav.dart';
 import 'package:flutter/material.dart';
 
-class RegisterStep4 extends StatefulWidget {
+class SignInStep3Page extends StatefulWidget {
 
   @override
-  _RegisterStep4State createState() => _RegisterStep4State();
+  _SignInStep3PageState createState() => _SignInStep3PageState();
 }
 
-class _RegisterStep4State extends State<RegisterStep4> {
+class _SignInStep3PageState extends State<SignInStep3Page> {
   String dropdownValue = 'CC';
 
   @override
   Widget build(BuildContext context) {
-    final decorationRectangle = Container(
-      width: 45.0,
-      height: 45.0,
-      margin: EdgeInsets.only(
-        top: 80.0,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-    );
-
-    final title = Container(
-      margin: EdgeInsets.only(
-        top: 25.0,
-      ),
-      child: Text(
-        "Paso 4",
-        style: TextStyle(color: Colors.black, fontSize: 42),
-      ),
-    );
-
-    final subtitle = Container(
-      margin: EdgeInsets.only(top: 15.0),
-      child: Text(
-        "Tu número de identificación",
-        style: TextStyle(color: Colors.grey, fontSize: 24),
-      ),
-    );
-
 
     final typeDniInput = Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -105,6 +77,7 @@ class _RegisterStep4State extends State<RegisterStep4> {
     final viewStructure = Scaffold(
       body: ListView(children: [
         Container(
+          margin: EdgeInsets.only(top: 80.0),
           padding: EdgeInsets.only(
             left: 40.0,
             right: 40.0,
@@ -113,11 +86,9 @@ class _RegisterStep4State extends State<RegisterStep4> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              decorationRectangle,
-              title,
-              subtitle,
+              SignInHeader(title: "Paso 3", subtitle: "Tu número de identificación"),
               form,
-              RegisterNavButtons('/registerStep5')
+              SignInNav('/signInStep4')
             ],
           ),
         ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-class RegisterNavButtons extends StatelessWidget {
+// ignore: must_be_immutable
+class SignInNav extends StatelessWidget {
   String pageToGo;
 
-  RegisterNavButtons(this.pageToGo);
+  SignInNav(this.pageToGo);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +44,11 @@ class RegisterNavButtons extends StatelessWidget {
           // if (_formKey.currentState.validate()) {
           //   // Process data.
           // }
-          Navigator.of(context).pushNamed(this.pageToGo);
+          if (this.pageToGo != "/home") {
+            Navigator.of(context).pushNamed(this.pageToGo);
+          } else {
+            Navigator.of(context).pushNamedAndRemoveUntil(this.pageToGo, (route) => false);
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

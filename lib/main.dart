@@ -1,10 +1,12 @@
+import 'package:e_voting/pages/home.page.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
-import './pages/login.dart';
-import './pages/registerStep1.dart';
-import './pages/registerStep2.dart';
-import './pages/registerStep3.dart';
-import './pages/registerStep4.dart';
+import 'package:e_voting/pages/login.page.dart';
+import 'package:e_voting/pages/signInStep1.page.dart';
+import 'package:e_voting/pages/signInStep2.page.dart';
+import 'package:e_voting/pages/signInStep3.page.dart';
+import 'package:e_voting/pages/signInStep4.page.dart';
+import 'package:e_voting/pages/signInStep5.page.dart';
 
 
 
@@ -39,27 +41,39 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/': (context) => LoginPage(),
+        // '/': (context) => HomePage(),
+
         '/login': (context) => LoginPage(),
       },
       // ignore: missing_return
       onGenerateRoute: (settings) {
         switch (settings.name) {
-          case '/registerStep1':
+          case '/signInStep1':
             return PageTransition(
-                child: RegisterStep1(), type: PageTransitionType.rightToLeft);
+                child: SignInStep1Page(), type: PageTransitionType.rightToLeft);
             break;
-          case '/registerStep2':
+          case '/signInStep2':
             return PageTransition(
-                child: RegisterStep2(), type: PageTransitionType.rightToLeft);
+                child: SignInStep2Page(), type: PageTransitionType.rightToLeft);
             break;
-          case '/registerStep3':
+          case '/signInStep3':
             return PageTransition(
-                child: RegisterStep3(), type: PageTransitionType.rightToLeft);
-            break;
-          case '/registerStep4':
+                child: SignInStep3Page(), type: PageTransitionType.rightToLeft);
+            break; 
+          case '/signInStep4':
             return PageTransition(
-                child: RegisterStep4(), type: PageTransitionType.rightToLeft);
+                child: SignInStep4Page(), type: PageTransitionType.rightToLeft);
             break;
+          case '/signInStep5':
+            return PageTransition(
+                child: SignInStep5Page(), type: PageTransitionType.rightToLeft);
+            break;
+
+          case '/home':
+          return PageTransition(
+              child: HomePage(), type: PageTransitionType.fade);
+          break;
+
           default:
             return null;
         }

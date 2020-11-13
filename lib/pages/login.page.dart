@@ -1,37 +1,9 @@
+import 'package:e_voting/components/signInHeader.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final decorationRectangle = Container(
-      width: 45.0,
-      height: 45.0,
-      margin: EdgeInsets.only(
-        top: 80.0,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-    );
-
-    final title = Container(
-      margin: EdgeInsets.only(
-        top: 25.0,
-      ),
-      child: Text(
-        "¡Inicia sesión!",
-        style: TextStyle(color: Colors.black, fontSize: 42),
-      ),
-    );
-
-    final subtitle = Container(
-      margin: EdgeInsets.only(top: 15.0),
-      child: Text(
-        "Ingresa para continuar",
-        style: TextStyle(color: Colors.grey, fontSize: 24),
-      ),
-    );
 
     final usernameInput = Container(
       child: TextFormField(
@@ -86,6 +58,9 @@ class LoginPage extends StatelessWidget {
           // if (_formKey.currentState.validate()) {
           //   // Process data.
           // }
+          Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+
+
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -135,7 +110,7 @@ class LoginPage extends StatelessWidget {
             // if (_formKey.currentState.validate()) {
             //   // Process data.
             // }
-            Navigator.of(context).pushNamed('/registerStep1');
+            Navigator.of(context).pushNamed('/signInStep1');
           },
           child: Center(
             child: Text(
@@ -161,6 +136,7 @@ class LoginPage extends StatelessWidget {
       // ),
       body: ListView(children: [
         Container(
+          margin: EdgeInsets.only(top: 80.0),
           padding: EdgeInsets.only(
             left: 40.0,
             right: 40.0,
@@ -169,9 +145,7 @@ class LoginPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              decorationRectangle,
-              title,
-              subtitle,
+              SignInHeader(title:"¡Inicia sesión!", subtitle:"Ingresa para continuar"),
               form,
               forgetPassButton,
               signUpButton

@@ -1,39 +1,10 @@
-import '../components/registerNavButtons.dart';
+import 'package:e_voting/components/signInNav.dart';
+import 'package:e_voting/components/signInHeader.dart';
 import 'package:flutter/material.dart';
 
-class RegisterStep1 extends StatelessWidget {
+class SignInStep1Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
-    final decorationRectangle = Container(
-      width: 45.0,
-      height: 45.0,
-      margin: EdgeInsets.only(
-        top: 80.0,
-      ),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(12),
-      ),
-    );
-
-    final title = Container(
-      margin: EdgeInsets.only(
-        top: 25.0,
-      ),
-      child: Text(
-        "Paso 1",
-        style: TextStyle(color: Colors.black, fontSize: 42),
-      ),
-    );
-
-    final subtitle = Container(
-      margin: EdgeInsets.only(top: 15.0),
-      child: Text(
-        "Introduce tus datos",
-        style: TextStyle(color: Colors.grey, fontSize: 24),
-      ),
-    );
 
     final namesInput = Container(
       child: TextFormField(
@@ -111,6 +82,7 @@ class RegisterStep1 extends StatelessWidget {
     final viewStructure = Scaffold(
       body: ListView(children: [
         Container(
+          margin: EdgeInsets.only(top: 80.0),
           padding: EdgeInsets.only(
             left: 40.0,
             right: 40.0,
@@ -119,11 +91,9 @@ class RegisterStep1 extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              decorationRectangle,
-              title,
-              subtitle,
+              SignInHeader(title: "Paso 1", subtitle: "Introduce tus datos"),
               form,
-              RegisterNavButtons('/registerStep2')
+              SignInNav('/signInStep2')
             ],
           ),
         ),
