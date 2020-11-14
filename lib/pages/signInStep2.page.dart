@@ -1,6 +1,6 @@
-import 'package:e_voting/components/signInHeader.dart';
+import 'package:e_voting/components/signInHeader.component.dart';
 
-import 'package:e_voting/components/signInNav.dart';
+import 'package:e_voting/components/signInNav.component.dart';
 import 'package:flutter/material.dart';
 
 class SignInStep2Page extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:e_voting/components/signInHeader.dart';
+import 'package:e_voting/components/signInHeader.component.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatelessWidget {

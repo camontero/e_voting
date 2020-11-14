@@ -1,5 +1,3 @@
-import 'package:e_voting/components/navBar.dart';
-import 'package:e_voting/components/signInHeader.dart';
 import 'package:e_voting/pages/favorites.page.dart';
 import 'package:e_voting/pages/settings.page.dart';
 import 'package:e_voting/pages/statistics.page.dart';
@@ -14,9 +12,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
-  PageController _pageController = PageController(initialPage: 1);
+  PageController _pageController = PageController(initialPage: 0);
   List<Widget> _pages = [
     FavoritesPage(),
     StatisticsPage(),
