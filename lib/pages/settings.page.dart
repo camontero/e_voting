@@ -1,5 +1,8 @@
-import 'package:e_voting/components/settingOption.component.dart';
+import 'package:svec/components/settingOption.component.dart';
 import 'package:flutter/material.dart';
+import 'package:svec/services/auth.service.dart';
+import 'package:provider/provider.dart';
+
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -40,7 +43,7 @@ class _SettingsPageState extends State<SettingsPage>
           border:
               Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.1)))),
       child: GestureDetector(
-        onTap: () => null,
+        onTap: () => context.read<AuthService>().logout(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

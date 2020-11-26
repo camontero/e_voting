@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 // ignore: must_be_immutable
-class SignInHeader extends StatelessWidget {
+class SignUpHeader extends StatelessWidget {
   String title;
   String subtitle;
   String image;
   final icon;
 
-  SignInHeader(
+  SignUpHeader(
       {@required this.title,
       this.subtitle = "",
       this.image = "",

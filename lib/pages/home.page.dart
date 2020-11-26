@@ -1,6 +1,6 @@
-import 'package:e_voting/pages/favorites.page.dart';
-import 'package:e_voting/pages/settings.page.dart';
-import 'package:e_voting/pages/statistics.page.dart';
+import 'package:svec/pages/favorites.page.dart';
+import 'package:svec/pages/settings.page.dart';
+import 'package:svec/pages/statistics.page.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {

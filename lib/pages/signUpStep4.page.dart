@@ -1,14 +1,14 @@
-import 'package:e_voting/components/signInHeader.component.dart';
-import 'package:e_voting/components/signInNav.component.dart';
+import 'package:svec/components/signUpHeader.component.dart';
+import 'package:svec/components/signInNav.component.dart';
 import 'package:flutter/material.dart';
 
-class SignInStep4Page extends StatefulWidget {
+class SignUpStep4Page extends StatefulWidget {
 
   @override
-  _SignInStep4PageState createState() => _SignInStep4PageState();
+  _SignUpStep4PageState createState() => _SignUpStep4PageState();
 }
 
-class _SignInStep4PageState extends State<SignInStep4Page> {
+class _SignUpStep4PageState extends State<SignUpStep4Page> {
   String telNumberValue = "+53";
 
   @override
@@ -85,7 +85,7 @@ class _SignInStep4PageState extends State<SignInStep4Page> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SignInHeader(title: "Paso 4", subtitle: "Tu número de identificación"),
+              SignUpHeader(title: "Paso 4", subtitle: "Tu número de identificación"),
               form,
               SignInNav('/signInStep5')
             ],

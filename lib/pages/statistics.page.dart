@@ -1,5 +1,5 @@
-import 'package:e_voting/components/votesSeriesBar.component.dart';
-import 'package:e_voting/templates/votesSeries.template.dart';
+import 'package:svec/components/votesSeriesBar.component.dart';
+import 'package:svec/models/votesSeries.model.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 

@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:e_voting/components/candidateCard.component.dart';
+import 'package:svec/components/candidateCard.component.dart';
 import 'package:flutter/material.dart';
 
 class FavoritesPage extends StatefulWidget {

@@ -1,22 +1,35 @@
-import 'package:e_voting/components/signInHeader.component.dart';
+import 'package:svec/components/signUpHeader.component.dart';
 import 'package:flutter/material.dart';
+import 'package:svec/services/auth.service.dart';
+import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  String _emailValue;
+  String _passwordValue;
+
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-
-    final usernameInput = Container(
+    final emailInput = Container(
       child: TextFormField(
+        keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          hintText: 'Nombre de usuario',
+          hintText: 'Correo electrónico',
           icon: Icon(Icons.account_box, size: 36.0),
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey[300])),
           hintStyle: TextStyle(color: Colors.grey),
         ),
+        onSaved: (value) =>_emailValue = value.trim(),
         validator: (value) {
           if (value.isEmpty) {
-            return 'Please enter some text';
+            return 'Por favor llene el campo';
           }
           return null;
         },
@@ -34,6 +47,7 @@ class LoginPage extends StatelessWidget {
           hintStyle: TextStyle(color: Colors.grey),
         ),
         obscureText: true,
+        onSaved: (value) => _passwordValue = value.trim(),
         validator: (value) {
           if (value.isEmpty) {
             return 'Please enter some text';
@@ -43,7 +57,7 @@ class LoginPage extends StatelessWidget {
       ),
     );
 
-    final submitButton = Container(
+    final loginButton = Container(
       child: RaisedButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.0),
@@ -53,14 +67,26 @@ class LoginPage extends StatelessWidget {
         splashColor: Colors.red,
         padding: EdgeInsets.fromLTRB(0, 14, 0, 14),
         onPressed: () {
-          // Validate will return true if the form is valid, or false if
-          // the form is invalid.
-          // if (_formKey.currentState.validate()) {
-          //   // Process data.
-          // }
-          Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+          if (_formKey.currentState.validate()) {
+             _formKey.currentState.save();
+                       print(this._emailValue);
 
-
+              context
+                  .read<AuthService>()
+                  .login(
+                    email: _emailValue,
+                    password: _passwordValue,
+                  )
+                  .then((value) {
+                if (value == true) {
+                  Navigator.of(context).pushNamed('/home');
+                } else {
+                  print('---------------->');
+                  print(value);
+                  // TODO: Agregar pop up de que algo pasó
+                }
+              });
+            }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -82,10 +108,10 @@ class LoginPage extends StatelessWidget {
     final form = Container(
       margin: EdgeInsets.only(top: 40.0),
       child: Form(
-        // key: _formKey,
+        key: _formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[usernameInput, passwordInput, submitButton],
+          children: <Widget>[emailInput, passwordInput, loginButton],
         ),
       ),
     );
@@ -104,14 +130,7 @@ class LoginPage extends StatelessWidget {
           textColor: Colors.white,
           splashColor: Colors.red,
           padding: EdgeInsets.fromLTRB(0, 14, 0, 14),
-          onPressed: () {
-            // Validate will return true if the form is valid, or false if
-            // the form is invalid.
-            // if (_formKey.currentState.validate()) {
-            //   // Process data.
-            // }
-            Navigator.of(context).pushNamed('/signInStep1');
-          },
+          onPressed: () => Navigator.of(context).pushNamed('/signInStep1'),
           child: Center(
             child: Text(
               'Registrarme',
@@ -120,20 +139,6 @@ class LoginPage extends StatelessWidget {
           )),
     );
     final viewStructure = Scaffold(
-      // appBar: AppBar(
-      //   shadowColor: Colors.transparent,
-      //   backgroundColor: Colors.deepPurple,
-      //   title: Text("Share"),
-      //   leading: GestureDetector(
-      //     onTap: () {},
-      //     child: IconButton(
-      //       icon: Icon(Icons.navigate_before),
-      //       tooltip: 'Return',
-      //       onPressed: () {
-      //       },
-      //     ),
-      //   ),
-      // ),
       body: ListView(children: [
         Container(
           margin: EdgeInsets.only(top: 80.0),
@@ -145,7 +150,8 @@ class LoginPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SignInHeader(title:"¡Inicia sesión!", subtitle:"Ingresa para continuar"),
+              SignUpHeader(
+                  title: "¡Inicia sesión!", subtitle: "Ingresa para continuar"),
               form,
               forgetPassButton,
               signUpButton

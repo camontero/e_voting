@@ -1,14 +1,14 @@
-import 'package:e_voting/components/signInHeader.component.dart';
+import 'package:svec/components/signUpHeader.component.dart';
 
-import 'package:e_voting/components/signInNav.component.dart';
+import 'package:svec/components/signInNav.component.dart';
 import 'package:flutter/material.dart';
 
-class SignInStep5Page extends StatefulWidget {
+class SignUpStep5Page extends StatefulWidget {
   @override
-  _SignInStep5PageState createState() => _SignInStep5PageState();
+  _SignUpStep5PageState createState() => _SignUpStep5PageState();
 }
 
-class _SignInStep5PageState extends State<SignInStep5Page> {
+class _SignUpStep5PageState extends State<SignUpStep5Page> {
   String dropdownValue = 'CC';
 
   @override
@@ -37,7 +37,7 @@ class _SignInStep5PageState extends State<SignInStep5Page> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SignInHeader(title: "Paso 5", icon: Icons.fingerprint),
+              SignUpHeader(title: "Paso 5", icon: Icons.fingerprint),
               caption,
               SignInNav('/home')
             ],

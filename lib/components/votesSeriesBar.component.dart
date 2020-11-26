@@ -1,5 +1,5 @@
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:e_voting/templates/votesSeries.template.dart';
+import 'package:svec/models/votesSeries.model.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 

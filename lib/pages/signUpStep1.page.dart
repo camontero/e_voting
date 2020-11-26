@@ -1,11 +1,10 @@
-import 'package:e_voting/components/signInNav.component.dart';
-import 'package:e_voting/components/signInHeader.component.dart';
+import 'package:svec/components/signInNav.component.dart';
+import 'package:svec/components/signUpHeader.component.dart';
 import 'package:flutter/material.dart';
 
-class SignInStep1Page extends StatelessWidget {
+class SignUpStep1Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     final namesInput = Container(
       child: TextFormField(
         decoration: InputDecoration(
@@ -43,11 +42,12 @@ class SignInStep1Page extends StatelessWidget {
       ),
     );
 
-    final usernameInput = Container(
+    final emailInput = Container(
       margin: EdgeInsets.only(top: 35.0),
       child: TextFormField(
+        keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          hintText: 'Nombre de usuario',
+          hintText: 'Correo electrónico',
           icon: Icon(Icons.account_box, size: 36.0),
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey[300])),
@@ -62,8 +62,6 @@ class SignInStep1Page extends StatelessWidget {
       ),
     );
 
-
-
     final form = Container(
       margin: EdgeInsets.symmetric(vertical: 40.0),
       child: Form(
@@ -73,7 +71,7 @@ class SignInStep1Page extends StatelessWidget {
           children: <Widget>[
             namesInput,
             lastNamesInput,
-            usernameInput,
+            emailInput,
           ],
         ),
       ),
@@ -91,7 +89,7 @@ class SignInStep1Page extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SignInHeader(title: "Paso 1", subtitle: "Introduce tus datos"),
+              SignUpHeader(title: "Paso 1", subtitle: "Introduce tus datos"),
               form,
               SignInNav('/signInStep2')
             ],

@@ -1,9 +1,8 @@
-import 'package:e_voting/components/signInHeader.component.dart';
-
-import 'package:e_voting/components/signInNav.component.dart';
+import 'package:svec/components/signUpHeader.component.dart';
+import 'package:svec/components/signInNav.component.dart';
 import 'package:flutter/material.dart';
 
-class SignInStep2Page extends StatelessWidget {
+class SignUpStep2Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
@@ -72,7 +71,7 @@ class SignInStep2Page extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SignInHeader(title: "Paso 2", subtitle: "Introduce tus datos"),
+              SignUpHeader(title: "Paso 2", subtitle: "Introduce tus datos"),
               form,
               SignInNav('/signInStep3')
             ],

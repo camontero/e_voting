@@ -1,4 +1,4 @@
-# e_voting
+# svec
 
 A new Flutter application.
 

@@ -1,15 +1,15 @@
-import 'package:e_voting/components/signInHeader.component.dart';
+import 'package:svec/components/signUpHeader.component.dart';
 
-import 'package:e_voting/components/signInNav.component.dart';
+import 'package:svec/components/signInNav.component.dart';
 import 'package:flutter/material.dart';
 
-class SignInStep3Page extends StatefulWidget {
+class SignUpStep3Page extends StatefulWidget {
 
   @override
-  _SignInStep3PageState createState() => _SignInStep3PageState();
+  _SignUpStep3PageState createState() => _SignUpStep3PageState();
 }
 
-class _SignInStep3PageState extends State<SignInStep3Page> {
+class _SignUpStep3PageState extends State<SignUpStep3Page> {
   String dropdownValue = 'CC';
 
   @override
@@ -86,7 +86,7 @@ class _SignInStep3PageState extends State<SignInStep3Page> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SignInHeader(title: "Paso 3", subtitle: "Tu número de identificación"),
+              SignUpHeader(title: "Paso 3", subtitle: "Tu número de identificación"),
               form,
               SignInNav('/signInStep4')
             ],
