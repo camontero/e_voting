@@ -1,83 +1,118 @@
 import 'package:svec/components/signUpHeader.component.dart';
-import 'package:svec/components/signInNav.component.dart';
+
+import 'package:svec/components/signUpNav.component.dart';
 import 'package:flutter/material.dart';
 
-class SignUpStep2Page extends StatelessWidget {
+
+class SignUpStep2Page extends StatefulWidget {
+
+  static const routeName = '/signUpStep2';
+  final Map<String, dynamic> signUpValues;
+  SignUpStep2Page(this.signUpValues);
+
+
+
+  @override
+  _SignUpStep2PageState createState() => _SignUpStep2PageState();
+}
+
+class _SignUpStep2PageState extends State<SignUpStep2Page> {
+
+  final _formKey = GlobalKey<FormState>();
+  String dropdownValue = 'CC';
+
+
+
+  String dniNumberValidator(String value) {
+    if (value.isNotEmpty) {
+      return null;
+    } else if(value.isEmpty) {
+      return 'Por favor digita tu número de identificación';
+    }else{
+      return 'Algo anda mal, por favor verifica tus datos';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    final passwordInput = Container(
-      child: TextFormField(
-        decoration: InputDecoration(
-          hintText: 'Crea tu contraseña',
-          icon: Icon(Icons.lock, size: 36.0),
-          enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey[300])),
-          hintStyle: TextStyle(color: Colors.grey),
+    this.widget.signUpValues['key'] = _formKey;
+    this.widget.signUpValues['dniType'] = dropdownValue;
+
+    final dniTypeInput = Container(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: EdgeInsets.only(right: 15.0),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(12)
+      ),
+      child: DropdownButton<String>(
+        value: dropdownValue,
+        hint: Text(dropdownValue),
+        icon: Icon(Icons.keyboard_arrow_down,color: Colors.white, size: 24),
+        style: TextStyle(color: Colors.white),
+        dropdownColor: Theme.of(context).primaryColor,
+        underline: Container(
+          height: 0,
         ),
-        obscureText: true,
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Please enter some text';
-          }
-          return null;
+        onChanged: (value) {
+          setState(() {
+            dropdownValue = value;
+          });
+          this.widget.signUpValues['dniType'] = value;
         },
+        items: <String>['CC', 'CE', 'TI'].map<DropdownMenuItem<String>>((value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
     );
 
-    final confirmPasswordInput = Container(
-      margin: EdgeInsets.only(top: 35.0),
+    final dniNumberInput = Expanded(
       child: TextFormField(
         decoration: InputDecoration(
-          hintText: 'Confirma tu contraseña',
-          icon: Icon(Icons.lock, size: 36.0),
-          enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.grey[300])),
+          hintText: '10010987654',
           hintStyle: TextStyle(color: Colors.grey),
         ),
-        obscureText: true,
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Please enter some text';
-          }
-          return null;
-        },
+        keyboardType: TextInputType.number,
+        onSaved: (value) => this.widget.signUpValues['dniNumber'] = value.trim().replaceAll(RegExp(r'[\,\.]'), ""),
+        validator: (value) => dniNumberValidator(value),
       ),
     );
+
 
     final form = Container(
       margin: EdgeInsets.symmetric(vertical: 40.0),
       child: Form(
-        // key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        key: _formKey,
+        child: Row(
           children: <Widget>[
-            passwordInput,
-            confirmPasswordInput,
+            dniTypeInput,
+            dniNumberInput
           ],
         ),
       ),
     );
 
     final viewStructure = Scaffold(
-      body: ListView(children: [
-        Container(
-          margin: EdgeInsets.only(top: 80.0),
-          padding: EdgeInsets.only(
-            left: 40.0,
-            right: 40.0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SignUpHeader(title: "Paso 2", subtitle: "Introduce tus datos"),
-              form,
-              SignInNav('/signInStep3')
-            ],
-          ),
+      body: Container(
+        margin: EdgeInsets.only(top: 80.0),
+        padding: EdgeInsets.only(
+          left: 40.0,
+          right: 40.0,
         ),
-      ]),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            SignUpHeader(title: "Paso 2", subtitle: "Tu número de identificación"),
+            form,
+            SignUpNav(pageToGo: '/signUpStep3',signUpValues: this.widget.signUpValues)
+          ],
+        ),
+      ),
     );
 
     return viewStructure;

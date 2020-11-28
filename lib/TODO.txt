@@ -1,0 +1,1 @@
+1) Cuando se registra y se devuelve en pasos, la formKey se pierde. Tratar de rehacer la formKey cada vez que se muestra la pantalla. Si no, rehacer el widget cuando se devuelva

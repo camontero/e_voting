@@ -43,7 +43,7 @@ class _SettingsPageState extends State<SettingsPage>
           border:
               Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.1)))),
       child: GestureDetector(
-        onTap: () => context.read<AuthService>().logout(),
+        onTap: () => null,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -117,6 +117,9 @@ class _SettingsPageState extends State<SettingsPage>
             colorBgIcon: Colors.green,
             hasSwapAction: true,
           ),
+          RaisedButton(onPressed: () => context.read<AuthService>().logout().then((value) {
+            Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
+          }), child: Text("salir"))
         ],
       ),
     );

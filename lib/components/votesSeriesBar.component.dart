@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 
 class  VotesSeriesBar extends StatelessWidget {
 
-  final List<VotesSeries> data;
+  final List<VotesSeriesModel> data;
 
   VotesSeriesBar({@required this.data});
 
   @override
   Widget build(BuildContext context) {
-    List<charts.Series<VotesSeries, String>> series = [
+    List<charts.Series<VotesSeriesModel, String>> series = [
       charts.Series(
         id: "Votos en tiempo real",
         data: data,
-        domainFn: (VotesSeries series, _) =>
+        domainFn: (VotesSeriesModel series, _) =>
             series.postulate,
-        measureFn: (VotesSeries series, _) =>
+        measureFn: (VotesSeriesModel series, _) =>
             series.voters,
-        colorFn: (VotesSeries series, _) =>
+        colorFn: (VotesSeriesModel series, _) =>
             series.barColor
       )
     ];

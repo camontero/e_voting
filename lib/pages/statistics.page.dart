@@ -14,20 +14,20 @@ class _StatisticsPageState extends State<StatisticsPage>
   Widget build(BuildContext context) {
     super.build(context);
 
-    final List<VotesSeries> data = [
-      VotesSeries(
+    final List<VotesSeriesModel> data = [
+      VotesSeriesModel(
         postulate: "Petro 1",
         voters: 20000,
         barColor:
             charts.ColorUtil.fromDartColor(Theme.of(context).primaryColor),
       ),
-      VotesSeries(
+      VotesSeriesModel(
         postulate: "Petro 2",
         voters: 25000,
         barColor:
             charts.ColorUtil.fromDartColor(Theme.of(context).primaryColorDark),
       ),
-      VotesSeries(
+      VotesSeriesModel(
         postulate: "Petro 3",
         voters: 30000,
         barColor:

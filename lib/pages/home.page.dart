@@ -5,16 +5,17 @@ import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
 
-
+  static const routeName = '/home';
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
 
+  int _selectedIndex = 0;
   PageController _pageController = PageController(initialPage: 0);
+
   List<Widget> _pages = [
     FavoritesPage(),
     StatisticsPage(),
@@ -32,6 +33,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
 
 
 

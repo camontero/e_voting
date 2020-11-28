@@ -14,6 +14,32 @@ class _LoginPageState extends State<LoginPage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  String emailValidator(value) {
+    String pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regExp = new RegExp(pattern);
+
+    if (regExp.hasMatch(value)) {
+      return null;
+    } else if (value.isEmpty) {
+      return 'Por favor digita tu correo electrónico';
+    } else {
+      return 'Algo anda mal, por favor verifica tus datos';
+    }
+  }
+
+  String passwordValidator(value) {
+    String pattern = r'^.{6,}$';
+    RegExp regExp = new RegExp(pattern);
+    if (regExp.hasMatch(value)) {
+      return null;
+    } else if (value.isEmpty) {
+      return 'Por favor digita tu contraseña';
+    } else {
+      return 'Algo anda mal, por favor verifica tus datos';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final emailInput = Container(
@@ -26,13 +52,8 @@ class _LoginPageState extends State<LoginPage> {
               borderSide: BorderSide(color: Colors.grey[300])),
           hintStyle: TextStyle(color: Colors.grey),
         ),
-        onSaved: (value) =>_emailValue = value.trim(),
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Por favor llene el campo';
-          }
-          return null;
-        },
+        onSaved: (value) => _emailValue = value.trim(),
+        validator: (value) => emailValidator(value),
       ),
     );
 
@@ -48,12 +69,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         obscureText: true,
         onSaved: (value) => _passwordValue = value.trim(),
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Please enter some text';
-          }
-          return null;
-        },
+        validator: (value) => passwordValidator(value),
       ),
     );
 
@@ -68,25 +84,24 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.fromLTRB(0, 14, 0, 14),
         onPressed: () {
           if (_formKey.currentState.validate()) {
-             _formKey.currentState.save();
-                       print(this._emailValue);
+            _formKey.currentState.save();
 
-              context
-                  .read<AuthService>()
-                  .login(
-                    email: _emailValue,
-                    password: _passwordValue,
-                  )
-                  .then((value) {
-                if (value == true) {
-                  Navigator.of(context).pushNamed('/home');
-                } else {
-                  print('---------------->');
-                  print(value);
-                  // TODO: Agregar pop up de que algo pasó
-                }
-              });
-            }
+            context
+                .read<AuthService>()
+                .login(
+                  email: _emailValue,
+                  password: _passwordValue,
+                )
+                .then((value) {
+              if (value == true) {
+                Navigator.of(context).pushNamed('/home');
+              } else {
+                print('---------------->');
+                print(value);
+                // TODO: Agregar pop up de que algo pasó
+              }
+            });
+          }
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -130,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
           textColor: Colors.white,
           splashColor: Colors.red,
           padding: EdgeInsets.fromLTRB(0, 14, 0, 14),
-          onPressed: () => Navigator.of(context).pushNamed('/signInStep1'),
+          onPressed: () => Navigator.of(context).pushNamed('/signUpStep1'),
           child: Center(
             child: Text(
               'Registrarme',

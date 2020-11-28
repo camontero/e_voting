@@ -1,97 +1,65 @@
 import 'package:svec/components/signUpHeader.component.dart';
-import 'package:svec/components/signInNav.component.dart';
+
+import 'package:svec/components/signUpNav.component.dart';
 import 'package:flutter/material.dart';
 
-class SignUpStep4Page extends StatefulWidget {
+class SignUpStep4Page extends StatelessWidget {
+  static const routeName = '/signUpStep4';
+  final Map<String, dynamic> signUpValues;
 
-  @override
-  _SignUpStep4PageState createState() => _SignUpStep4PageState();
-}
-
-class _SignUpStep4PageState extends State<SignUpStep4Page> {
-  String telNumberValue = "+53";
+  SignUpStep4Page(this.signUpValues);
 
   @override
   Widget build(BuildContext context) {
-
-    final telTypeInput = Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      margin: EdgeInsets.only(right: 15.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(12)
-      ),
-      child: DropdownButton<String>(
-        value: telNumberValue,
-        hint: Text(telNumberValue),
-        icon: Icon(Icons.keyboard_arrow_down,color: Colors.white, size: 24),
-        style: TextStyle(color: Colors.white),
-        dropdownColor: Theme.of(context).primaryColor,
-        underline: Container(
-          height: 0,
-        ),
-        onChanged: (String newValue) {
-          setState(() {
-            telNumberValue = newValue;
-          });
-        },
-        items: <String>["+53", '+52', '+51'].map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-      ),
-    );
-
-    final telNumberInput = Expanded(
-      child: TextFormField(
-        decoration: InputDecoration(
-          hintText: '3065197565',
-          hintStyle: TextStyle(color: Colors.grey),
-        ),
-        obscureText: true,
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Please enter some text';
-          }
-          return null;
-        },
-      ),
-    );
-
-    final form = Container(
-      margin: EdgeInsets.symmetric(vertical: 40.0),
-      child: Form(
-        // key: _formKey,
-        child: Row(
-          children: <Widget>[
-            telTypeInput,
-            telNumberInput
-          ],
-        ),
-      ),
-    );
+    final caption = Container(
+        margin: EdgeInsets.only(top: 15.0, bottom: 40.0),
+        child: Text(
+          'Registra tu huella para verificar tu identidad',
+          style: TextStyle(fontSize: 18, color: Colors.grey),
+        ));
 
     final viewStructure = Scaffold(
-      body: ListView(children: [
-        Container(
-          margin: EdgeInsets.only(top: 80.0),
-          padding: EdgeInsets.only(
-            left: 40.0,
-            right: 40.0,
-          ),
-          child: Column(
+      body: Container(
+        margin: EdgeInsets.only(top: 80.0),
+        padding: EdgeInsets.only(
+          left: 40.0,
+          right: 40.0,
+        ),
+        child: Stack(children: [
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SignUpHeader(title: "Paso 4", subtitle: "Tu número de identificación"),
-              form,
-              SignInNav('/signInStep5')
+              SignUpHeader(title: "Paso 5", icon: Icons.fingerprint),
+              caption,
+              SignUpNav(pageToGo: '/signUpFinalStep', signUpValues: signUpValues)
             ],
           ),
-        ),
-      ]),
+          Container(
+            height: 260,
+            decoration: BoxDecoration(
+              color: Colors.red.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Center(
+                child: Text(
+              "Estamos en construcción, por favor continua",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: <Shadow>[
+                    Shadow(
+                      offset: Offset(3.0, 3.0),
+                      blurRadius: 5.0,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  ]),
+            )),
+          )
+        ]),
+      ),
     );
 
     return viewStructure;

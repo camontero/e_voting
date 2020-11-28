@@ -1,42 +1,60 @@
 import 'package:svec/components/signUpHeader.component.dart';
-
-import 'package:svec/components/signInNav.component.dart';
+import 'package:svec/components/signUpNav.component.dart';
 import 'package:flutter/material.dart';
 
 class SignUpStep3Page extends StatefulWidget {
+  static const routeName = '/signUpStep3';
+  final Map<String, dynamic> signUpValues;
+
+  SignUpStep3Page(this.signUpValues);
 
   @override
   _SignUpStep3PageState createState() => _SignUpStep3PageState();
 }
 
 class _SignUpStep3PageState extends State<SignUpStep3Page> {
-  String dropdownValue = 'CC';
+  final _formKey = GlobalKey<FormState>();
+  String telTypeValue = "+53";
+
+  String telNumberValidator(String value) {
+
+    if (value.isNotEmpty) {
+      return null;
+    } else if (value.isEmpty) {
+      return 'Por favor digita tu número de celular';
+    } else {
+      return 'Algo anda mal, por favor verifica tus datos';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    this.widget.signUpValues['key'] = _formKey;
+    this.widget.signUpValues['telType'] = telTypeValue;
 
-    final typeDniInput = Container(
+    final telTypeInput = Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       margin: EdgeInsets.only(right: 15.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(12)
-      ),
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(12)),
       child: DropdownButton<String>(
-        value: dropdownValue,
-        hint: Text(dropdownValue),
-        icon: Icon(Icons.keyboard_arrow_down,color: Colors.white, size: 24),
+        value: telTypeValue,
+        hint: Text(telTypeValue),
+        icon: Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 24),
         style: TextStyle(color: Colors.white),
         dropdownColor: Theme.of(context).primaryColor,
         underline: Container(
           height: 0,
         ),
-        onChanged: (String newValue) {
+        onChanged: (value) {
           setState(() {
-            dropdownValue = newValue;
+            telTypeValue = value;
           });
+          this.widget.signUpValues['telType'] = telTypeValue;
         },
-        items: <String>['CC', 'CE', 'TI'].map<DropdownMenuItem<String>>((String value) {
+        items: <String>["+53", '+52', '+51']
+            .map<DropdownMenuItem<String>>((value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(value),
@@ -45,31 +63,25 @@ class _SignUpStep3PageState extends State<SignUpStep3Page> {
       ),
     );
 
-    final dniInput = Expanded(
+    final telNumberInput = Expanded(
       child: TextFormField(
         decoration: InputDecoration(
-          hintText: '10010987654',
+          hintText: '3065197565',
           hintStyle: TextStyle(color: Colors.grey),
         ),
-        obscureText: true,
-        validator: (value) {
-          if (value.isEmpty) {
-            return 'Please enter some text';
-          }
-          return null;
-        },
+        keyboardType: TextInputType.number,
+        onSaved: (value) =>
+            this.widget.signUpValues['telNumber'] = value.trim().replaceAll(RegExp(r'[\,\.]'), ""),
+        validator: (value) => telNumberValidator(value),
       ),
     );
 
     final form = Container(
       margin: EdgeInsets.symmetric(vertical: 40.0),
       child: Form(
-        // key: _formKey,
+        key: _formKey,
         child: Row(
-          children: <Widget>[
-            typeDniInput,
-            dniInput
-          ],
+          children: <Widget>[telTypeInput, telNumberInput],
         ),
       ),
     );
@@ -86,9 +98,12 @@ class _SignUpStep3PageState extends State<SignUpStep3Page> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SignUpHeader(title: "Paso 3", subtitle: "Tu número de identificación"),
+              SignUpHeader(
+                  title: "Paso 3", subtitle: "Tu número de identificación"),
               form,
-              SignInNav('/signInStep4')
+              SignUpNav(
+                  pageToGo: '/signUpStep4',
+                  signUpValues: this.widget.signUpValues)
             ],
           ),
         ),
