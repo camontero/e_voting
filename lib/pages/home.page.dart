@@ -1,4 +1,4 @@
-import 'package:svec/pages/favorites.page.dart';
+import 'package:svec/pages/elections.page.dart';
 import 'package:svec/pages/settings.page.dart';
 import 'package:svec/pages/statistics.page.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   PageController _pageController = PageController(initialPage: 0);
 
   List<Widget> _pages = [
-    FavoritesPage(),
+    ElectionsPage(),
     StatisticsPage(),
     SettingsPage()
   ];

@@ -58,16 +58,22 @@ class _SettingOptionState extends State<SettingOption> {
       );
     }
 
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 20),
-      decoration: BoxDecoration(
-        border: Border(
-            bottom: BorderSide(
-              color: Colors.grey.withOpacity(0.1),
-            )),
-      ),
-      child: GestureDetector(
-        onTap: () => this.widget.hasSwapAction ? null : print("jac"),
+    return GestureDetector(
+      onTap: () => {
+        if (this.widget.hasSwapAction){
+            setState(() {
+              this._isSwitched = this._isSwitched ? false : true;
+            })
+          }
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 20),
+        decoration: BoxDecoration(
+          border: Border(
+              bottom: BorderSide(
+            color: Colors.grey.withOpacity(0.1),
+          )),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

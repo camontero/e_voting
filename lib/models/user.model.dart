@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class UserModel {
 
   String password;
@@ -11,13 +13,13 @@ class UserModel {
 
 
   UserModel({
-    this.name,
-    this.lastname,
-    this.email,
-    this.password,
-    this.dniType,
-    this.dniNumber,
-    this.telType,
-    this.telNumber,
+    @required this.name,
+    @required this.lastname,
+    @required this.email,
+    @required this.password,
+    @required this.dniType,
+    @required this.dniNumber,
+    @required this.telType,
+    @required this.telNumber,
   });
 }

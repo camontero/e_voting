@@ -100,7 +100,7 @@ class SignUpStep1Page extends StatelessWidget {
           children: [
             SignUpHeader(title: "Paso 1", subtitle: "Introduce tus datos"),
             form,
-            SignUpNav(pageToGo: '/signUpStep2',signUpValues: signUpValues)
+            SignUpNav(pageToGo: '/signUpStep2', prevPage: '/' ,signUpValues: signUpValues)
           ],
         ),
       ),

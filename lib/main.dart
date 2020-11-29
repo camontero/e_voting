@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
+import 'package:svec/pages/election.page.dart';
 import 'package:svec/services/auth.service.dart';
 
 // Pages
@@ -25,14 +26,18 @@ void main() async {
 }
 
 class SvecApp extends StatelessWidget {
+  final db = FirebaseFirestore.instance;
+  final auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
+        Provider<FirebaseFirestore>(
+          create: (_) => db,
+        ),
         Provider<AuthService>(
-          create: (_) => AuthService(FirebaseAuth.instance, FirebaseFirestore.instance),
+          create: (_) => AuthService(auth, db),
         ),
         StreamProvider(
           create: (context) => context.read<AuthService>().authStateChanges,
@@ -55,6 +60,16 @@ class SvecApp extends StatelessWidget {
         // ignore: missing_return
         onGenerateRoute: (settings) {
           switch (settings.name) {
+            case HomePage.routeName:
+              return PageTransition(
+                  child: HomePage(), type: PageTransitionType.fade);
+              break;
+
+            case LoginPage.routeName:
+              return PageTransition(
+                  child: LoginPage(), type: PageTransitionType.fade);
+              break;
+
             case SignUpStep1Page.routeName:
               return PageTransition(
                   child: SignUpStep1Page(),
@@ -85,10 +100,11 @@ class SvecApp extends StatelessWidget {
                   type: PageTransitionType.rightToLeft);
               break;
 
-            case HomePage.routeName:
-              return PageTransition(
-                  child: HomePage(), type: PageTransitionType.fade);
-              break;
+           case ElectionPage.routeName:
+             final Map<String, String> positionElections = settings.arguments;
+            return PageTransition(
+                child: ElectionPage(positionElections), type: PageTransitionType.rightToLeft);
+            break;
 
             default:
               return null;

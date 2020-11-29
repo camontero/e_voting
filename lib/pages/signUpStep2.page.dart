@@ -109,7 +109,7 @@ class _SignUpStep2PageState extends State<SignUpStep2Page> {
           children: [
             SignUpHeader(title: "Paso 2", subtitle: "Tu número de identificación"),
             form,
-            SignUpNav(pageToGo: '/signUpStep3',signUpValues: this.widget.signUpValues)
+            SignUpNav(pageToGo: '/signUpStep3',prevPage: '/signUpStep1', signUpValues: this.widget.signUpValues)
           ],
         ),
       ),

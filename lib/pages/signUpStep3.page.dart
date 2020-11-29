@@ -103,6 +103,7 @@ class _SignUpStep3PageState extends State<SignUpStep3Page> {
               form,
               SignUpNav(
                   pageToGo: '/signUpStep4',
+                  prevPage: '/signUpStep2',
                   signUpValues: this.widget.signUpValues)
             ],
           ),

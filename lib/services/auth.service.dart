@@ -4,19 +4,19 @@ import 'package:flutter/foundation.dart';
 import 'package:svec/models/user.model.dart';
 
 class AuthService {
-  final FirebaseAuth _firebaseAuth;
+  final FirebaseAuth _auth;
   final FirebaseFirestore _db;
 
-  AuthService(this._firebaseAuth, this._db);
+  AuthService(this._auth, this._db);
 
   /// Changed to idTokenChanges as it updates depending on more cases.
-  Stream<User> get authStateChanges => _firebaseAuth.idTokenChanges();
+  Stream<User> get authStateChanges => _auth.idTokenChanges();
 
   /// This won't pop routes so you could do something like
   /// Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
   /// after you called this method if you want to pop all routes.
   Future<void> logout() async {
-    return await _firebaseAuth.signOut();
+    return await _auth.signOut();
   }
 
   /// There are a lot of different ways on how you can do exception handling.
@@ -26,7 +26,7 @@ class AuthService {
   Future<dynamic> login(
       {@required String email, @required String password}) async {
     try {
-      await _firebaseAuth.signInWithEmailAndPassword(
+      await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       return true;
     } on FirebaseAuthException catch (e) {
@@ -40,7 +40,7 @@ class AuthService {
   /// error messages. That way you can throw, return or whatever you prefer with that instead.
   Future<dynamic> signUp({@required UserModel newUser}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
           email: newUser.email, password: newUser.password);
       return true;
     } on FirebaseAuthException catch (e) {
@@ -49,6 +49,10 @@ class AuthService {
   }
 
   Future<dynamic> signUpProfile({@required UserModel newUser}) async {
+    // print(_auth.currentUser.uid);
+    // print(_auth.currentUser.email);
+
+
     return await _db
         .collection('users')
         .add({
@@ -62,4 +66,17 @@ class AuthService {
         .then((value) => "User Added")
         .catchError((error) => "Failed to add user: $error");
   }
+
+  Future<dynamic> deleteUser({@required user}) async {
+
+    EmailAuthCredential credential = EmailAuthProvider.credential(email: user.email, password: user.password);
+
+    // Reauthenticate
+    return await _auth.currentUser.reauthenticateWithCredential(credential).then((value) async {
+      return await FirebaseAuth.instance.currentUser.delete();
+    });
+
+  }
+
+
 }

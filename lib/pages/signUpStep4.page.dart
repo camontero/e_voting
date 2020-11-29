@@ -30,9 +30,9 @@ class SignUpStep4Page extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SignUpHeader(title: "Paso 5", icon: Icons.fingerprint),
+              SignUpHeader(title: "Paso 4", icon: Icons.fingerprint),
               caption,
-              SignUpNav(pageToGo: '/signUpFinalStep', signUpValues: signUpValues)
+              SignUpNav(pageToGo: '/signUpFinalStep',prevPage: '/signUpStep3', signUpValues: signUpValues)
             ],
           ),
           Container(

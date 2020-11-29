@@ -5,21 +5,22 @@ import 'package:provider/provider.dart';
 import 'package:svec/services/auth.service.dart';
 
 class SignUpNav extends StatelessWidget {
+
   final String pageToGo;
+  final String prevPage;
   final Map<String, dynamic> signUpValues;
 
-  SignUpNav(
-      {@required this.pageToGo,
-      @required this.signUpValues});
+  SignUpNav({@required this.pageToGo, @required this.signUpValues, this.prevPage});
 
   @override
   Widget build(BuildContext context) {
 
+
     void nextController() {
       if (signUpValues['key'].currentState.validate()) {
         signUpValues['key'].currentState.save();
-        if (pageToGo != "/home") {
-          print(signUpValues);
+
+        if (pageToGo != "/login") {
           Navigator.of(context).pushNamed(pageToGo, arguments: signUpValues);
         } else {
           UserModel user = UserModel(
@@ -34,10 +35,12 @@ class SignUpNav extends StatelessWidget {
           );
 
           context.read<AuthService>().signUp(newUser: user).then((value) {
-            print(value);
-          });
-          context.read<AuthService>().signUpProfile(newUser: user).then((value) {
-            print(value);
+            if (value == true) {
+              context.read<AuthService>().signUpProfile(newUser: user);
+            } else {
+              // if something went wrong with profileUser, we have to delete the prev "userWithEmailAndPass"
+              context.read<AuthService>().deleteUser(user: user);
+            }
           });
 
           Navigator.of(context)
@@ -56,7 +59,8 @@ class SignUpNav extends StatelessWidget {
           textColor: Colors.white,
           splashColor: Colors.red,
           padding: EdgeInsets.fromLTRB(0, 14, 0, 14),
-          onPressed: () => Navigator.of(context).pop(),
+          //TODO: use pop or simething else to don-t make de page transition look weird. The problem is the formKe that is not rebuilded when te user goes back
+          onPressed: () => Navigator.of(context).pushNamed(prevPage, arguments: signUpValues),
           child: Icon(Icons.arrow_back)),
     );
 

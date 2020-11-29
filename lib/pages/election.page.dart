@@ -1,23 +1,35 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:svec/components/candidateCard.component.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:svec/services/positionElections.service.dart';
 
-class FavoritesPage extends StatefulWidget {
+
+class ElectionPage extends StatefulWidget {
+  static const routeName = '/election';
+
+  final Map<String, String> positionElections;
+  ElectionPage(this.positionElections);
+
   @override
-  _FavoritesPageState createState() => _FavoritesPageState();
+  _ElectionPageState createState() => _ElectionPageState();
 }
 
-class _FavoritesPageState extends State<FavoritesPage>
-    with AutomaticKeepAliveClientMixin {
+class _ElectionPageState extends State<ElectionPage> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+
+    final db = context.watch<FirebaseFirestore>();
+    print(this.widget.positionElections);
+    PositionElectionsService(db).getPositionElectionByTypeAndYear(type: this.widget.positionElections["type"], year: this.widget.positionElections["year"]).then((value) {print(value);} );
 
     final titleBox = Row(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          margin: EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0),
+          margin: EdgeInsets.only(top: 60.0, left: 20.0, right: 20.0),
           padding: EdgeInsets.all(15.0),
           decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
@@ -30,12 +42,12 @@ class _FavoritesPageState extends State<FavoritesPage>
         ),
       ],
     );
-
+    //
     final candidatesCarousel = Container(
       margin: EdgeInsets.symmetric(vertical: 15.0),
       child: CarouselSlider(
         options: CarouselOptions(
-          height: 570.0,
+          height: 500.0,
           enlargeCenterPage: true,
         ),
         items: [1, 2, 3, 4, 5].map((i) {
@@ -55,18 +67,31 @@ class _FavoritesPageState extends State<FavoritesPage>
         }).toList(),
       ),
     );
-    final viewStructure = ListView(
-      children: [
-        titleBox,
-        candidatesCarousel,
-        // Text("Titulo"),
-        // candidatesCarousel
-      ],
+
+    final viewStructure = Scaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          titleBox,
+          Container(
+            margin: EdgeInsets.only(top: 30.0),
+            height: (MediaQuery.of(context).size.height - 153),
+            child: MediaQuery.removePadding(
+              removeTop: true,
+              context: context,
+              child: ListView(
+                children: [
+                  candidatesCarousel,
+                 // Text("Titulo"),
+                 // candidatesCarousel
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
     );
 
     return viewStructure;
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

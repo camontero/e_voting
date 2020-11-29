@@ -4,6 +4,9 @@ import 'package:svec/services/auth.service.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
+
+  static const routeName = '/login';
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -96,8 +99,6 @@ class _LoginPageState extends State<LoginPage> {
               if (value == true) {
                 Navigator.of(context).pushNamed('/home');
               } else {
-                print('---------------->');
-                print(value);
                 // TODO: Agregar pop up de que algo pasó
               }
             });
