@@ -18,9 +18,11 @@ class PositionElectionsService {
             .map((doc) => PositionElectionModel(
                 name: doc["name"],
                 type: doc["type"],
+                year: doc["year"],
                 positionElection: doc["positionElection"],
                 candidates: doc["candidates"]))
             .toList());
   }
+
 
 }

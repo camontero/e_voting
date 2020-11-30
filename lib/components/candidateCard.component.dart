@@ -1,34 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:flutter/foundation.dart';
+import 'package:provider/provider.dart';
+import 'package:svec/models/candidate.model.dart';
+import 'package:svec/services/candidates.service.dart';
+import 'package:svec/services/image.service.dart';
 
-// ignore: must_be_immutable
 class CandidateCard extends StatefulWidget {
-  String name;
-  String politicalParty;
-  String city;
-  String amountOfVotes;
-  String thumbnail;
-  String proposals;
+  final String candidateId;
 
-
-  CandidateCard(
-      {this.name,
-      this.politicalParty,
-      this.city,
-      this.amountOfVotes,
-      this.thumbnail,
-      this.proposals});
-
-
+  CandidateCard({@required this.candidateId});
 
   @override
   _CandidateCardState createState() => _CandidateCardState();
 }
 
 class _CandidateCardState extends State<CandidateCard> {
-
   bool _cardDisabled = false;
   GlobalKey<FlipCardState> _cardKey = GlobalKey<FlipCardState>();
+
+  CandidateModel _candidate = CandidateModel(
+      name: "cargando...",
+      lastname: "cargando...",
+      politicalParty: "cargando...",
+      city: "cargando...",
+      thumbnailName: "lib/assets/images/profile.png");
 
   void _showAlertDialog(BuildContext context) {
     // set up the buttons
@@ -37,17 +35,18 @@ class _CandidateCardState extends State<CandidateCard> {
       onPressed: () => Navigator.of(context).pop(),
     );
     Widget continueButton = FlatButton(
-      child: Text("Votar"),
-      onPressed: () {
-        Navigator.of(context).pop();
-        setState(() { this._cardDisabled = true; });
-      }
-    );
+        child: Text("Votar"),
+        onPressed: () {
+          Navigator.of(context).pop();
+          setState(() {
+            this._cardDisabled = true;
+          });
+        });
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Usted está a punto de votar por ${this.widget.name}"),
-      content: Text("¿Está seguro de votar por ${this.widget.name}?"),
+      title: Text("Usted está a punto de votar por ${_candidate.name}"),
+      content: Text("¿Está seguro de votar por ${_candidate.name}?"),
       actions: [
         cancelButton,
         continueButton,
@@ -62,8 +61,28 @@ class _CandidateCardState extends State<CandidateCard> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
+    final db = context.watch<FirebaseFirestore>();
+    final storage = context.watch<FirebaseStorage>();
+
+    CandidatesService(db).getCandidateById(id: widget.candidateId).then((doc) {
+
+
+      ImageService(storage).getImageByRef(refa: doc.thumbnailName).then((value) {
+
+        setState(() {
+        _candidate.name = doc.name;
+        _candidate.lastname = doc.lastname;
+        _candidate.politicalParty = doc.politicalParty;
+        _candidate.city = doc.city;
+        _candidate.thumbnailName = value;
+        //   print(value);
+      });
+      });
+    });
+
     final placeBox = Container(
       child: Row(
         children: [
@@ -76,35 +95,7 @@ class _CandidateCardState extends State<CandidateCard> {
             ),
           ),
           Text(
-            this.widget.city,
-            style: TextStyle(
-              color: Colors.white,
-              shadows: <Shadow>[
-                Shadow(
-                  offset: Offset(1.0, 1.0),
-                  blurRadius: 5.0,
-                  color: Color.fromARGB(255, 0, 0, 0),
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-
-    final votesBox = Container(
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 5.0),
-            child: Icon(
-              Icons.how_to_vote,
-              size: 16,
-              color: Colors.white,
-            ),
-          ),
-          Text(
-            this.widget.amountOfVotes,
+            _candidate.city,
             style: TextStyle(
               color: Colors.white,
               shadows: <Shadow>[
@@ -123,13 +114,13 @@ class _CandidateCardState extends State<CandidateCard> {
     final headerFrontBox = Container(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [placeBox, votesBox],
+        children: [placeBox],
       ),
     );
 
     final nameBox = Container(
       child: Text(
-        this.widget.name,
+        _candidate.name,
         style: TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
@@ -147,7 +138,7 @@ class _CandidateCardState extends State<CandidateCard> {
     final politicalPartyBox = Container(
       margin: EdgeInsets.only(top: 15.0),
       child: Text(
-        this.widget.politicalParty,
+        _candidate.politicalParty,
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
@@ -188,7 +179,8 @@ class _CandidateCardState extends State<CandidateCard> {
     );
 
     final frontCard = GestureDetector(
-      onDoubleTap: () => this._cardDisabled ? null: this._showAlertDialog(context),
+      onDoubleTap: () =>
+          this._cardDisabled ? null : this._showAlertDialog(context),
       child: Stack(
         children: [
           Container(
@@ -198,18 +190,21 @@ class _CandidateCardState extends State<CandidateCard> {
               right: 25.0,
               bottom: 45.0,
             ),
-
             foregroundDecoration: BoxDecoration(
-              color: this._cardDisabled ? Colors.grey: null,
-              backgroundBlendMode: this._cardDisabled ? BlendMode.saturation: null,
-              borderRadius: this._cardDisabled ? BorderRadius.circular(25): null,
+              color: this._cardDisabled ? Colors.grey : null,
+              backgroundBlendMode:
+                  this._cardDisabled ? BlendMode.saturation : null,
+              borderRadius:
+                  this._cardDisabled ? BorderRadius.circular(25) : null,
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               image: DecorationImage(
-                image: AssetImage(this.widget.thumbnail),
-                fit: BoxFit.cover,
-              ),
+                  image: _candidate.thumbnailName ==
+                          "lib/assets/images/profile.png"
+                      ? AssetImage(_candidate.thumbnailName)
+                      : NetworkImage(_candidate.thumbnailName),
+                  fit: BoxFit.cover),
               boxShadow: [
                 BoxShadow(
                     color: Color.fromRGBO(173, 179, 191, 1.0),
@@ -241,7 +236,7 @@ class _CandidateCardState extends State<CandidateCard> {
 
     final proposalsBackBox = Container(
         child: Text(
-      this.widget.proposals,
+      "hacer servicio de propuestas",
       // style: Te,
     ));
 

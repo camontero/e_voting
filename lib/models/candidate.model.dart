@@ -5,12 +5,12 @@ class CandidateModel {
   String lastname;
   String politicalParty;
   String city;
-  String thumbnail;
+  String thumbnailName;
 
   CandidateModel(
       {@required this.name,
       @required this.lastname,
       @required this.politicalParty,
       @required this.city,
-      @required this.thumbnail});
+      @required this.thumbnailName});
 }

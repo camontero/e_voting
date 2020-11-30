@@ -9,6 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:svec/pages/election.page.dart';
 import 'package:svec/services/auth.service.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 
 // Pages
 import 'package:svec/pages/home.page.dart';
@@ -26,8 +28,9 @@ void main() async {
 }
 
 class SvecApp extends StatelessWidget {
-  final db = FirebaseFirestore.instance;
-  final auth = FirebaseAuth.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final firebase_storage.FirebaseStorage storage = firebase_storage.FirebaseStorage.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +38,9 @@ class SvecApp extends StatelessWidget {
       providers: [
         Provider<FirebaseFirestore>(
           create: (_) => db,
+        ),
+        Provider<firebase_storage.FirebaseStorage>(
+          create: (_) => storage,
         ),
         Provider<AuthService>(
           create: (_) => AuthService(auth, db),
