@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
-class YearOption extends StatelessWidget {
+class ElectionOption extends StatelessWidget {
   final String label;
   final String year;
   final String type;
 
-  YearOption(
+  ElectionOption(
       {@required this.label,@required this.year, @required this.type});
 
   @override
