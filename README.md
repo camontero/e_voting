@@ -1,6 +1,6 @@
 # svec
 
-A new Flutter application.
+A new Flutter application for the registration of citizens authorized to vote and to carry out the electoral process, it has statistical information and communicates the results in real time.
 
 ## Getting Started
 
