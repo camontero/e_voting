@@ -21,6 +21,8 @@ import 'package:svec/pages/signUpStep2.page.dart';
 import 'package:svec/pages/signUpStep3.page.dart';
 import 'package:svec/pages/signUpFinalStep.page.dart';
 
+import 'models/election.model.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -34,6 +36,7 @@ class SvecApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MultiProvider(
       providers: [
         Provider<FirebaseFirestore>(
@@ -107,9 +110,9 @@ class SvecApp extends StatelessWidget {
               break;
 
            case ElectionPage.routeName:
-             final Map<String, String> positionElections = settings.arguments;
+             final ElectionModel election = settings.arguments;
             return PageTransition(
-                child: ElectionPage(positionElections), type: PageTransitionType.rightToLeft);
+                child: ElectionPage(election), type: PageTransitionType.rightToLeft);
             break;
 
             default:

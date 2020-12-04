@@ -5,13 +5,13 @@ import 'package:flip_card/flip_card.dart';
 import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:svec/models/candidate.model.dart';
-import 'package:svec/services/candidates.service.dart';
 import 'package:svec/services/image.service.dart';
+import 'package:svec/services/proposals.service.dart';
 
 class CandidateCard extends StatefulWidget {
-  final String candidateId;
+  final CandidateModel candidate;
 
-  CandidateCard({@required this.candidateId});
+  CandidateCard({@required this.candidate});
 
   @override
   _CandidateCardState createState() => _CandidateCardState();
@@ -20,13 +20,8 @@ class CandidateCard extends StatefulWidget {
 class _CandidateCardState extends State<CandidateCard> {
   bool _cardDisabled = false;
   GlobalKey<FlipCardState> _cardKey = GlobalKey<FlipCardState>();
-
-  CandidateModel _candidate = CandidateModel(
-      name: "cargando...",
-      lastname: "cargando...",
-      politicalParty: "cargando...",
-      city: "cargando...",
-      thumbnailName: "lib/assets/images/profile.png");
+  String _thumbnail = "lib/assets/images/profile.png";
+  String _proposal = "Cargando...";
 
   void _showAlertDialog(BuildContext context) {
     // set up the buttons
@@ -45,8 +40,8 @@ class _CandidateCardState extends State<CandidateCard> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Usted está a punto de votar por ${_candidate.name}"),
-      content: Text("¿Está seguro de votar por ${_candidate.name}?"),
+      title: Text("Usted está a punto de votar por ${widget.candidate.name}"),
+      content: Text("¿Está seguro de votar por ${widget.candidate.name}?"),
       actions: [
         cancelButton,
         continueButton,
@@ -62,27 +57,36 @@ class _CandidateCardState extends State<CandidateCard> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final db = context.watch<FirebaseFirestore>();
-    final storage = context.watch<FirebaseStorage>();
+  void didChangeDependencies() {
+    final db = context.read<FirebaseFirestore>();
+    final storage = context.read<FirebaseStorage>();
 
-    CandidatesService(db).getCandidateById(id: widget.candidateId).then((doc) {
-
-
-      ImageService(storage).getImageByRef(refa: doc.thumbnailName).then((value) {
-
+    ImageService(storage)
+        .getImageByRef(refa: widget.candidate.thumbnailName)
+        .then((value) {
+      if ((this.mounted) & (value.isNotEmpty)) {
         setState(() {
-        _candidate.name = doc.name;
-        _candidate.lastname = doc.lastname;
-        _candidate.politicalParty = doc.politicalParty;
-        _candidate.city = doc.city;
-        _candidate.thumbnailName = value;
-        //   print(value);
-      });
-      });
+          _thumbnail = value;
+          //   print(value);
+        });
+      }
     });
 
+    ProposalsService(db)
+        .getProposoalByCandidateId(id: widget.candidate.id)
+        .then((value) {
+      if ((this.mounted) & (value.isNotEmpty)) {
+        setState(() {
+          _proposal = value[0].proposals;
+          //   print(value);
+        });
+      }
+    });
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final placeBox = Container(
       child: Row(
         children: [
@@ -95,7 +99,7 @@ class _CandidateCardState extends State<CandidateCard> {
             ),
           ),
           Text(
-            _candidate.city,
+            widget.candidate.city,
             style: TextStyle(
               color: Colors.white,
               shadows: <Shadow>[
@@ -120,9 +124,26 @@ class _CandidateCardState extends State<CandidateCard> {
 
     final nameBox = Container(
       child: Text(
-        _candidate.name,
+        widget.candidate.name,
         style: TextStyle(
-            fontSize: 32,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            shadows: <Shadow>[
+              Shadow(
+                offset: Offset(3.0, 3.0),
+                blurRadius: 5.0,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+            ]),
+      ),
+    );
+
+    final lastnameBox = Container(
+      child: Text(
+        widget.candidate.lastname,
+        style: TextStyle(
+            fontSize: 28,
             fontWeight: FontWeight.bold,
             color: Colors.white,
             shadows: <Shadow>[
@@ -136,9 +157,10 @@ class _CandidateCardState extends State<CandidateCard> {
     );
 
     final politicalPartyBox = Container(
+      constraints: BoxConstraints(maxWidth: 200),
       margin: EdgeInsets.only(top: 15.0),
       child: Text(
-        _candidate.politicalParty,
+        widget.candidate.politicalParty,
         style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
@@ -173,6 +195,7 @@ class _CandidateCardState extends State<CandidateCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           nameBox,
+          lastnameBox,
           politicalPartyBox,
         ],
       ),
@@ -200,10 +223,9 @@ class _CandidateCardState extends State<CandidateCard> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(25),
               image: DecorationImage(
-                  image: _candidate.thumbnailName ==
-                          "lib/assets/images/profile.png"
-                      ? AssetImage(_candidate.thumbnailName)
-                      : NetworkImage(_candidate.thumbnailName),
+                  image: _thumbnail == "lib/assets/images/profile.png"
+                      ? AssetImage("lib/assets/images/profile.png")
+                      : NetworkImage(_thumbnail),
                   fit: BoxFit.cover),
               boxShadow: [
                 BoxShadow(
@@ -235,10 +257,8 @@ class _CandidateCardState extends State<CandidateCard> {
     );
 
     final proposalsBackBox = Container(
-        child: Text(
-      "hacer servicio de propuestas",
-      // style: Te,
-    ));
+      child: Text(_proposal),
+    );
 
     final backCard = Stack(
       children: [

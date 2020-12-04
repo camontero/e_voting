@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
-import 'package:svec/components/yearOption.component.dart';
+import 'package:svec/components/ElectionOption.component.dart';
 import 'package:flutter/material.dart';
+import 'package:svec/models/election.model.dart';
 import 'package:svec/services/elections.service.dart';
 
 class ElectionsPage extends StatefulWidget {
@@ -11,10 +12,19 @@ class ElectionsPage extends StatefulWidget {
 
 class _ElectionsPageState extends State<ElectionsPage>
     with AutomaticKeepAliveClientMixin {
+
+  Future<List<ElectionModel>> _elections;
+
+  @override
+  void didChangeDependencies() {
+    final db = context.read<FirebaseFirestore>();
+    _elections =  ElectionsService(db).getElections();
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    final db = context.watch<FirebaseFirestore>();
 
 
     super.build(context);
@@ -49,7 +59,7 @@ class _ElectionsPageState extends State<ElectionsPage>
               removeTop: true,
               context: context,
               child: FutureBuilder(
-                  future: ElectionsService(db).getElections(),
+                  future: _elections,
                   builder: (context, AsyncSnapshot snapshot) {
                     if (!snapshot.hasData) {
                       return Center(child: CircularProgressIndicator());
@@ -58,7 +68,7 @@ class _ElectionsPageState extends State<ElectionsPage>
                           child: ListView.builder(
                               itemCount: snapshot.data.length,
                               itemBuilder: (BuildContext context, int index) {
-                                return YearOption(label: snapshot.data[index].name, year: snapshot.data[index].year, type: snapshot.data[index].type );
+                                return ElectionOption(election: snapshot.data[index]);
                               }));
                     }
                   })),
@@ -66,10 +76,8 @@ class _ElectionsPageState extends State<ElectionsPage>
       ],
     );
 
-    return Provider<ElectionsService>(
-      create: (_) => ElectionsService(db),
-      child: viewStructure,
-    );
+    //NOTE: Yep, let ListView because when the user log in, the last text field from the form overflowed the view. In order to prevent it, we use a ListView. Anyways eventually it will becomes a big list
+    return ListView(children: [viewStructure]);
   }
 
   @override

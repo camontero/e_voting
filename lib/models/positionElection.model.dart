@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class PositionElectionModel {
+  String id;
   String name;
   String type;
   String year;
@@ -8,7 +9,8 @@ class PositionElectionModel {
   List<dynamic> candidates;
 
   PositionElectionModel(
-      {@required this.name,
+      {@required this.id,
+      @required this.name,
       @required this.type,
       @required this.year,
       @required this.positionElection,

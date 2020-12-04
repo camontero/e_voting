@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:svec/services/auth.service.dart';
 import 'package:provider/provider.dart';
 
-
 class SettingsPage extends StatefulWidget {
   @override
   _SettingsPageState createState() => _SettingsPageState();
@@ -22,7 +21,7 @@ class _SettingsPageState extends State<SettingsPage>
           color: Colors.redAccent, borderRadius: BorderRadius.circular(100)),
       child: Text(
         'JJ',
-        style: TextStyle(fontSize: 18,color: Colors.white),
+        style: TextStyle(fontSize: 18, color: Colors.white),
       ),
     );
 
@@ -117,9 +116,24 @@ class _SettingsPageState extends State<SettingsPage>
             colorBgIcon: Colors.green,
             hasSwapAction: true,
           ),
-          RaisedButton(onPressed: () => context.read<AuthService>().logout().then((value) {
-            Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-          }), child: Text("salir"))
+          Container(
+            margin: EdgeInsets.only(top: 20.0),
+            child: RaisedButton(
+
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                color: Theme.of(context).primaryColor,
+                textColor: Colors.white,
+                splashColor: Colors.red,
+                padding: EdgeInsets.fromLTRB(0, 14, 0, 14),
+                onPressed: () =>
+                    context.read<AuthService>().logout().then((value) {
+                      Navigator.of(context)
+                          .pushNamedAndRemoveUntil('/', (route) => false);
+                    }),
+                child: Text("Cerrar sesión")),
+          )
         ],
       ),
     );

@@ -16,22 +16,28 @@ class _StatisticsPageState extends State<StatisticsPage>
 
     final List<VotesSeriesModel> data = [
       VotesSeriesModel(
-        postulate: "Petro 1",
-        voters: 20000,
+        postulate: "Claudia Lopez",
+        voters: 10000,
         barColor:
             charts.ColorUtil.fromDartColor(Theme.of(context).primaryColor),
       ),
       VotesSeriesModel(
-        postulate: "Petro 2",
+        postulate: "Carlos Galán",
         voters: 25000,
         barColor:
-            charts.ColorUtil.fromDartColor(Theme.of(context).primaryColorDark),
+            charts.ColorUtil.fromDartColor(Colors.pinkAccent),
       ),
       VotesSeriesModel(
-        postulate: "Petro 3",
+        postulate: "Miguel Uribe",
         voters: 30000,
         barColor:
-            charts.ColorUtil.fromDartColor(Theme.of(context).primaryColorLight),
+            charts.ColorUtil.fromDartColor(Colors.yellow),
+      ),
+      VotesSeriesModel(
+        postulate: "Hollman Morris",
+        voters: 15000,
+        barColor:
+            charts.ColorUtil.fromDartColor(Colors.redAccent),
       ),
     ];
 
@@ -54,9 +60,9 @@ class _StatisticsPageState extends State<StatisticsPage>
     );
 
     final seriesBarBox = Container(
-      height: 350,
+      height: 400,
       width: 305.0,
-      padding: EdgeInsets.all(15.0),
+      padding: EdgeInsets.only(top: 25.0, bottom: 15.0, left: 15.0, right: 15.0),
       margin: EdgeInsets.only(bottom:15.0, left: 15.0, right: 15.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25),
@@ -84,7 +90,6 @@ class _StatisticsPageState extends State<StatisticsPage>
             context: context,
             child: ListView(
               children: [
-                seriesBarBox,
                 seriesBarBox,
               ],
             ),

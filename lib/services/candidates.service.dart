@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:svec/models/candidate.model.dart';
-import 'package:svec/models/positionElection.model.dart';
 
 class CandidatesService {
   final FirebaseFirestore _db;
@@ -14,6 +13,7 @@ class CandidatesService {
         .doc(id)
         .get()
         .then((DocumentSnapshot doc) => CandidateModel(
+              id: doc.id,
               name: doc["name"],
               lastname: doc["lastname"],
               politicalParty: doc["politicalParty"],

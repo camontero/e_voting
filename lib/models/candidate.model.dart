@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class CandidateModel {
+  String id;
   String name;
   String lastname;
   String politicalParty;
@@ -8,7 +9,8 @@ class CandidateModel {
   String thumbnailName;
 
   CandidateModel(
-      {@required this.name,
+      {@required this.id,
+      @required this.name,
       @required this.lastname,
       @required this.politicalParty,
       @required this.city,

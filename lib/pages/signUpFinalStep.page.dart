@@ -79,7 +79,7 @@ class SignUpFinalStepPage extends StatelessWidget {
           errorMaxLines: 2
         ),
         controller: passwordController,
-        // obscureText: true,
+        obscureText: true,
         onSaved: (value) => signUpValues['password'] = value.trim(),
         validator: (value) => passwordValidator(value),
       ),
@@ -94,8 +94,9 @@ class SignUpFinalStepPage extends StatelessWidget {
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey[300])),
           hintStyle: TextStyle(color: Colors.grey),
+
         ),
-        // obscureText: true,
+        obscureText: true,
         validator: (value) => password2Validator(value),
       ),
     );

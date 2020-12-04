@@ -35,16 +35,22 @@ class SignUpNav extends StatelessWidget {
           );
 
           context.read<AuthService>().signUp(newUser: user).then((value) {
+            print("a");
             if (value == true) {
               context.read<AuthService>().signUpProfile(newUser: user);
+              Navigator.of(context)
+                .pushNamedAndRemoveUntil(pageToGo, (route) => false);
             } else {
+              //TODO: Make a dialog with error messages, not only a general one...
+              AlertDialog(
+                title: Text("Hubo un error, por favor intentelo de nuevo"),
+              );
               // if something went wrong with profileUser, we have to delete the prev "userWithEmailAndPass"
               context.read<AuthService>().deleteUser(user: user);
             }
           });
+          //TODO: Resolve console's error when someone ends the regristration
 
-          Navigator.of(context)
-              .pushNamedAndRemoveUntil(pageToGo, (route) => false);
         }
       }
     }
